@@ -1,0 +1,818 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#f7c9ce" />
+    <meta
+      name="description"
+      content="《理想国度》治愈系横屏互动游戏 Demo：走进暖光集市，收集那些被生活挤掉的小愿望。"
+    />
+    <title>理想国度</title>
+    <link rel="preload" href="./assets/dream-kingdom.png" as="image" />
+    <link rel="preload" href="./assets/videos/kitten-butterfly.mp4" as="video" type="video/mp4" />
+    <link rel="preload" href="./assets/videos/painting-forest.mp4" as="video" type="video/mp4" />
+    <link rel="preload" href="./assets/videos/tourist-photo.mp4" as="video" type="video/mp4" />
+    <link rel="preload" href="./assets/audio/background-music.mp3" as="audio" type="audio/mpeg" />
+    <link rel="stylesheet" href="./styles.css?v=20260607-01" />
+  </head>
+  <body>
+    <audio id="background-music" src="./assets/audio/background-music.mp3" preload="auto" autoplay loop></audio>
+    <div class="ambient-light" aria-hidden="true"></div>
+
+    <main class="game-frame" id="game-frame">
+      <div class="game-world" id="game-world">
+        <div class="painted-sky" aria-hidden="true"></div>
+        <div class="grain" aria-hidden="true"></div>
+        <div class="floating-particles" id="floating-particles" aria-hidden="true"></div>
+
+        <section class="scene scene-loading is-active" id="scene-loading" data-scene="loading">
+          <div class="loading-vignette" aria-hidden="true"></div>
+          <div class="loading-content">
+            <div class="dream-loader" aria-hidden="true">
+              <span class="loader-moon"></span>
+              <span class="loader-orbit orbit-one"><i></i></span>
+              <span class="loader-orbit orbit-two"><i></i></span>
+              <span class="loader-orbit orbit-three"><i></i></span>
+              <span class="loader-spark spark-one"></span>
+              <span class="loader-spark spark-two"></span>
+            </div>
+            <p class="loading-kicker">一场柔软的远行</p>
+            <p class="loading-copy" id="loading-copy">正在把梦吹亮...</p>
+            <div class="loading-track" aria-hidden="true">
+              <span id="loading-progress"></span>
+            </div>
+            <button class="skip-intro" id="skip-intro" type="button">轻触进入</button>
+          </div>
+        </section>
+
+        <section class="scene scene-title" id="scene-title" data-scene="title" aria-hidden="true">
+          <video
+            class="title-background-video"
+            src="./assets/front/game-start-background.mp4"
+            muted
+            autoplay
+            playsinline
+            loop
+            preload="auto"
+            aria-hidden="true"
+          ></video>
+          <div class="cloud cloud-a" aria-hidden="true"></div>
+          <div class="cloud cloud-b" aria-hidden="true"></div>
+          <header class="top-bar">
+            <p class="chapter-tag"><span></span> No. 01 · 暖光集市</p>
+            <div class="top-actions">
+              <button class="icon-button" id="sound-toggle" type="button" aria-label="开启声音" title="声音">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M5 9v6h4l5 4V5L9 9H5Z"></path>
+                  <path class="sound-wave" d="M17 9c1.2 1 1.2 5 0 6M19.5 6.5c3.2 3 3.2 8 0 11"></path>
+                </svg>
+              </button>
+              <button class="icon-button" id="fullscreen-toggle" type="button" aria-label="全屏显示" title="全屏">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M8 4H4v4M16 4h4v4M8 20H4v-4M16 20h4v-4"></path>
+                </svg>
+              </button>
+            </div>
+          </header>
+
+          <div class="title-content">
+            <p class="eyebrow">WELCOME TO YOUR</p>
+            <div class="title-lockup" aria-label="理想国度">
+              <span class="title-star">✦</span>
+              <h1>
+                <span>理</span><span>想</span><span>国</span><span>度</span>
+              </h1>
+              <p>IDEAL KINGDOM</p>
+            </div>
+            <p class="title-slogan">每一个没说出口的愿望，都在这里悄悄长大。</p>
+          </div>
+
+          <div class="title-cta">
+            <button class="glass-button primary-button" id="start-button" type="button">
+              <span class="button-shimmer" aria-hidden="true"></span>
+              <span class="button-label">开始专注</span>
+            </button>
+            <p class="micro-copy">点击启程 · 建议佩戴耳机</p>
+          </div>
+
+          <div class="story-ribbon" aria-hidden="true">
+            <span>一</span>
+            <p>要是有个地方，能接住那些被生活挤掉的小愿望就好了。</p>
+          </div>
+        </section>
+
+<section class="scene scene-companion" id="scene-companion" data-scene="companion" aria-hidden="true">
+          <div class="companion-video-stage" aria-label="小猫动作舞台">
+            <video
+              class="cat-action-video is-active"
+              data-cat-video="0"
+              src="./assets/cat-actions/cat-action-01.mp4"
+              muted
+              playsinline
+              loop
+              preload="auto"
+            ></video>
+            <video
+              class="cat-action-video"
+              data-cat-video="1"
+              src="./assets/cat-actions/cat-action-02.mp4"
+              muted
+              playsinline
+              loop
+              preload="auto"
+              aria-hidden="true"
+            ></video>
+            <video
+              class="cat-action-video"
+              data-cat-video="2"
+              src="./assets/cat-actions/cat-action-03-yewan.mp4"
+              muted
+              playsinline
+              loop
+              preload="auto"
+              aria-hidden="true"
+            ></video>
+            <span class="companion-mist" aria-hidden="true"></span>
+          </div>
+
+          <header class="page-header companion-header">
+            <button class="back-button" data-go="title" type="button" aria-label="返回标题页">
+              <span>←</span> 返回
+            </button>
+            <div>
+              <p>MEET YOUR GUIDE</p>
+              <h2>小猫在梦口等你</h2>
+            </div>
+          </header>
+
+          <button
+            class="companion-wind-chime"
+            id="companion-wind-chime"
+            type="button"
+            aria-label="点击或向下拉风铃，切换小猫场景"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow="0"
+          >
+            <img
+              src="./assets/front/companion-wind-chime.png"
+              alt=""
+              draggable="false"
+            />
+          </button>
+
+          <button class="companion-next" data-go="select" type="button" aria-label="去暖光集市">
+            <img src="./assets/front/companion-next-notebook.png" alt="" draggable="false" />
+          </button>
+
+          <button class="companion-cat-hotspot" id="companion-cat-hotspot" type="button" aria-label="和小猫说话"></button>
+          <div class="companion-cat-dialog" id="companion-cat-dialog" role="dialog" aria-live="polite" aria-hidden="true">
+            <button class="companion-cat-dialog__close" id="companion-cat-dialog-close" type="button" aria-label="关闭小猫对话">×</button>
+            <p>“君不见高堂明镜悲白发，朝如青丝暮成雪……唉，可是我头上本来就是白的呀？”</p>
+          </div>
+
+          <nav class="companion-quick-actions" aria-label="快捷功能">
+            <button class="companion-quick-button" type="button" aria-label="设置" data-quick-action="settings">
+              <span class="companion-quick-mask">
+                <img src="./assets/front/companion-settings.png" alt="" />
+              </span>
+              <span class="companion-quick-tooltip" aria-hidden="true">设置</span>
+            </button>
+            <button class="companion-quick-button" type="button" aria-label="心情" data-quick-action="mood">
+              <span class="companion-quick-mask">
+                <img src="./assets/front/companion-mood.png" alt="" />
+              </span>
+              <span class="companion-quick-tooltip" aria-hidden="true">心情</span>
+            </button>
+            <button class="companion-quick-button" type="button" aria-label="奖励" data-quick-action="reward" data-go="reward">
+              <span class="companion-quick-mask">
+                <img src="./assets/front/companion-shop.png" alt="" />
+              </span>
+              <span class="companion-quick-tooltip" aria-hidden="true">奖励</span>
+            </button>
+          </nav>
+
+          <div class="cat-moment" aria-live="polite">
+            <p id="cat-action-kicker">MOMENT 01</p>
+            <h3 id="cat-action-title">把今天放慢一点</h3>
+          </div>
+        </section>
+
+        <section class="scene scene-reward" id="scene-reward" data-scene="reward" aria-hidden="true">
+          <div class="reward-wash" aria-hidden="true"></div>
+          <header class="page-header reward-header">
+            <button class="back-button" data-go="companion" type="button" aria-label="返回小猫页面">
+              <span>←</span> 返回
+            </button>
+            <div>
+              <p>REWARD TREE</p>
+              <h2>奖励</h2>
+            </div>
+          </header>
+
+          <div class="reward-tree-stage" id="reward-tree-stage" aria-label="奖励摇钱树">
+            <img class="reward-tree-image" src="./assets/front/reward-tree.png" alt="" draggable="false" />
+            <div class="reward-coins" aria-hidden="true">
+              <span class="reward-coin" data-reward-coin data-coin-weight="0.55" style="--coin-left: 50%; --coin-top: 82%; --coin-size: 46px; --coin-delay: -0.1s;">
+                <img src="./assets/front/companion-shop.png" alt="" draggable="false" />
+              </span>
+              <span class="reward-coin" data-reward-coin data-coin-weight="0.68" style="--coin-left: 42%; --coin-top: 76%; --coin-size: 42px; --coin-delay: -0.6s;">
+                <img src="./assets/front/companion-shop.png" alt="" draggable="false" />
+              </span>
+              <span class="reward-coin" data-reward-coin data-coin-weight="0.74" style="--coin-left: 59%; --coin-top: 73%; --coin-size: 43px; --coin-delay: -1.1s;">
+                <img src="./assets/front/companion-shop.png" alt="" draggable="false" />
+              </span>
+              <span class="reward-coin" data-reward-coin data-coin-weight="0.82" style="--coin-left: 36%; --coin-top: 68%; --coin-size: 39px; --coin-delay: -0.3s;">
+                <img src="./assets/front/companion-shop.png" alt="" draggable="false" />
+              </span>
+              <span class="reward-coin" data-reward-coin data-coin-weight="0.88" style="--coin-left: 55%; --coin-top: 64%; --coin-size: 40px; --coin-delay: -0.9s;">
+                <img src="./assets/front/companion-shop.png" alt="" draggable="false" />
+              </span>
+              <span class="reward-coin" data-reward-coin data-coin-weight="0.95" style="--coin-left: 64%; --coin-top: 59%; --coin-size: 36px; --coin-delay: -1.4s;">
+                <img src="./assets/front/companion-shop.png" alt="" draggable="false" />
+              </span>
+              <span class="reward-coin" data-reward-coin data-coin-weight="1.02" style="--coin-left: 45%; --coin-top: 55%; --coin-size: 37px; --coin-delay: -0.2s;">
+                <img src="./assets/front/companion-shop.png" alt="" draggable="false" />
+              </span>
+              <span class="reward-coin" data-reward-coin data-coin-weight="1.08" style="--coin-left: 31%; --coin-top: 52%; --coin-size: 34px; --coin-delay: -1s;">
+                <img src="./assets/front/companion-shop.png" alt="" draggable="false" />
+              </span>
+            </div>
+          </div>
+        </section>
+
+        <div class="settings-modal" id="settings-modal" role="dialog" aria-modal="true" aria-hidden="true" aria-label="设置">
+          <button class="settings-modal__mask" data-settings-close type="button" aria-label="关闭设置"></button>
+          <div class="settings-modal__panel">
+            <button class="settings-modal__close" data-settings-close type="button" aria-label="关闭">×</button>
+            <div class="settings-cat-card" aria-hidden="true">
+              <img class="settings-cat-avatar" src="./assets/front/settings-cat-avatar.svg" alt="" draggable="false" />
+            </div>
+            <section class="settings-content">
+              <p>CAT ROOM SETTINGS</p>
+              <h2>设置</h2>
+              <div class="settings-volume-box">
+                <label for="settings-volume">音乐音量</label>
+                <div class="settings-volume-control">
+                  <input id="settings-volume" type="range" min="0" max="100" value="70" aria-label="音乐音量" />
+                  <span id="settings-volume-value">70%</span>
+                </div>
+              </div>
+              <div class="settings-account-actions" aria-label="账号操作">
+                <button class="settings-action-button" data-settings-action="switch" type="button">切换账号</button>
+                <button class="settings-action-button settings-action-button--quiet" data-settings-action="logout" type="button">退出登录</button>
+              </div>
+              <p class="settings-status" id="settings-status" aria-live="polite">小猫会帮你守好今天的梦。</p>
+            </section>
+          </div>
+        </div>
+
+        <div class="mood-modal" id="mood-modal" role="dialog" aria-modal="true" aria-hidden="true" aria-label="小猫的心情日志">
+          <button class="mood-modal__mask" data-mood-close type="button" aria-label="关闭心情日志"></button>
+          <div class="mood-modal__panel">
+            <button class="mood-modal__close" data-mood-close type="button" aria-label="关闭">×</button>
+            <section class="mood-log">
+              <p>CAT MOOD LOG</p>
+              <h2>小猫的心情日志</h2>
+              <ul>
+                <li>
+                  <span>08:20</span>
+                  <strong>在窗边醒来</strong>
+                  <em>今天想慢慢地晒一会儿太阳。</em>
+                </li>
+                <li>
+                  <span>14:10</span>
+                  <strong>听见风铃</strong>
+                  <em>如果有人轻轻拉它，小猫会换一个梦。</em>
+                </li>
+                <li>
+                  <span>21:35</span>
+                  <strong>灯暗了</strong>
+                  <em>把尾巴收好，准备睡进柔软的夜里。</em>
+                </li>
+              </ul>
+            </section>
+            <section class="mood-stickers" aria-label="小猫心情表情包">
+              <img class="mood-calendar-image" src="./assets/front/mood-calendar.jpg" alt="小猫心情日历" draggable="false" />
+              <div class="mood-expression-pack" aria-label="三种小猫情绪表情包">
+                <article class="mood-expression mood-expression--happy" aria-label="开心小猫">
+                  <span class="mood-cat-ear mood-cat-ear--left"></span>
+                  <span class="mood-cat-ear mood-cat-ear--right"></span>
+                  <span class="mood-cat-face">
+                    <span class="mood-cat-eye mood-cat-eye--left"></span>
+                    <span class="mood-cat-eye mood-cat-eye--right"></span>
+                    <span class="mood-cat-blush mood-cat-blush--left"></span>
+                    <span class="mood-cat-blush mood-cat-blush--right"></span>
+                    <span class="mood-cat-mouth"></span>
+                  </span>
+                  <strong>开心</strong>
+                </article>
+                <article class="mood-expression mood-expression--soft" aria-label="放松小猫">
+                  <span class="mood-cat-ear mood-cat-ear--left"></span>
+                  <span class="mood-cat-ear mood-cat-ear--right"></span>
+                  <span class="mood-cat-face">
+                    <span class="mood-cat-eye mood-cat-eye--left"></span>
+                    <span class="mood-cat-eye mood-cat-eye--right"></span>
+                    <span class="mood-cat-blush mood-cat-blush--left"></span>
+                    <span class="mood-cat-blush mood-cat-blush--right"></span>
+                    <span class="mood-cat-mouth"></span>
+                  </span>
+                  <strong>放松</strong>
+                </article>
+                <article class="mood-expression mood-expression--sleepy" aria-label="困困小猫">
+                  <span class="mood-cat-ear mood-cat-ear--left"></span>
+                  <span class="mood-cat-ear mood-cat-ear--right"></span>
+                  <span class="mood-cat-face">
+                    <span class="mood-cat-eye mood-cat-eye--left"></span>
+                    <span class="mood-cat-eye mood-cat-eye--right"></span>
+                    <span class="mood-cat-blush mood-cat-blush--left"></span>
+                    <span class="mood-cat-blush mood-cat-blush--right"></span>
+                    <span class="mood-cat-mouth"></span>
+                  </span>
+                  <strong>困困</strong>
+                </article>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <section class="scene scene-select" id="scene-select" data-scene="select" aria-hidden="true">
+          <div class="scene-wash" aria-hidden="true"></div>
+          <header class="page-header">
+            <button class="back-button" data-go="title" type="button" aria-label="返回标题页">
+              <span>←</span> 返回
+            </button>
+            <div>
+              <p>CHOOSE A DREAM</p>
+              <h2>今天，想去哪里散散心？</h2>
+              <small class="select-subtitle">选择一个国度，先收拾行囊，再把被生活挤掉的小愿望找回来。</small>
+            </div>
+            <div class="select-status-stack">
+              <div class="dream-count"><span>✦</span> 0 / 5</div>
+              <div class="map-tomato-timer" id="map-tomato-timer" aria-live="polite" aria-label="地图专注倒计时">
+                <img class="map-tomato-timer__art" src="./assets/user-art/map-cat-timer-note-cutout.png" alt="" draggable="false" />
+                <div class="map-tomato-timer__dial" aria-hidden="true">
+                  <span class="map-timer-dial-hand"></span>
+                </div>
+                <div class="map-tomato-timer__copy" aria-hidden="true">
+                  <small id="map-timer-status">待启程</small>
+                  <strong id="map-timer-display">25:00</strong>
+                </div>
+                <div class="map-journey-story" id="map-journey-story" aria-hidden="true">
+                  <p>小猫把地图摊开，等你把第一颗勇气星星放进口袋。</p>
+                </div>
+              </div>
+            </div>
+          </header>
+
+          <div class="realm-grid" aria-label="梦境地图">
+            <div class="realm-card realm-featured realm-candy">
+              <button class="realm-visual realm-play-trigger" type="button" aria-label="打开行囊，准备进入暖光集市">
+                <img src="./assets/dreams/sunlit-market.jpg" alt="" draggable="false" />
+                <span class="realm-light" aria-hidden="true"></span>
+              </button>
+              <button
+                class="realm-sticker sticker-backpack realm-backpack-trigger"
+                data-realm="candy"
+                type="button"
+                aria-label="打开小背包，进入小物件页面"
+              >
+                <img src="./assets/user-art/backpack.png" alt="" draggable="false" />
+              </button>
+              <span class="realm-number">01</span>
+              <span class="realm-featured-copy">
+                <span class="realm-meta">
+                  <span class="realm-status">今日开放</span>
+                  <strong>暖光集市</strong>
+                  <small>在街角找回 5 枚走失的愿望</small>
+                </span>
+                <span class="realm-route" aria-hidden="true">
+                  <i>1 选国度</i>
+                  <i>2 收行囊</i>
+                  <i>3 找愿望</i>
+                </span>
+                <span class="realm-enter" aria-hidden="true"><b>↗</b></span>
+              </span>
+            </div>
+
+            <div class="realm-stack">
+              <button class="realm-card realm-preview realm-open realm-windy" data-realm="meadow" type="button" aria-label="进入风眠草坡">
+                <img class="realm-photo" src="./assets/dreams/windy-meadow.jpg" alt="" draggable="false" />
+                <span class="realm-preview-shade" aria-hidden="true"></span>
+                <span class="realm-meta">
+                  <span class="realm-status">视频开放</span>
+                  <strong>风眠草坡</strong>
+                  <small>小猫追着蝴蝶，把风逗醒</small>
+                </span>
+                <img class="realm-sticker sticker-bookmark" src="./assets/user-art/bookmark.png" alt="" draggable="false" />
+              </button>
+
+              <button class="realm-card realm-preview realm-open realm-forest" data-realm="forest" type="button" aria-label="进入晴光森林">
+                <img class="realm-photo" src="./assets/dreams/sunlit-forest.jpg" alt="" draggable="false" />
+                <span class="realm-preview-shade" aria-hidden="true"></span>
+                <span class="realm-meta">
+                  <span class="realm-status">视频开放</span>
+                  <strong>晴光森林</strong>
+                  <small>在树影里画一束晴光</small>
+                </span>
+                <img class="realm-sticker sticker-music-box" src="./assets/user-art/music-box.png" alt="" draggable="false" />
+              </button>
+            </div>
+          </div>
+
+          <p class="select-tip"><span>✦</span> 第一站开放：暖光集市正在等你。第二站：风眠草坡有小猫和蝴蝶。</p>
+        </section>
+
+        <section class="scene scene-meadow" id="scene-meadow" data-scene="meadow" aria-hidden="true">
+          <div class="meadow-backdrop" aria-hidden="true"></div>
+          <div class="meadow-breeze" aria-hidden="true">
+            <span></span><span></span><span></span>
+          </div>
+          <header class="page-header meadow-header">
+            <button class="back-button" data-go="select" type="button" aria-label="返回国度选择">
+              <span>←</span> 返回
+            </button>
+            <div>
+              <p>WINDY MEADOW</p>
+              <h2>风眠草坡</h2>
+              <small class="select-subtitle">把今天交给柔软的风，小猫会替你追一会儿蝴蝶。</small>
+            </div>
+            <button class="meadow-next" data-go="play" type="button">
+              去暖光集市 <span>→</span>
+            </button>
+          </header>
+
+          <div class="meadow-stage">
+            <div class="meadow-video-card" aria-label="小猫抓蝴蝶视频">
+              <video
+                class="meadow-video"
+                id="meadow-video"
+                src="./assets/videos/kitten-butterfly.mp4"
+                poster="./assets/dreams/windy-meadow.jpg"
+                muted
+                playsinline
+                loop
+                preload="auto"
+              ></video>
+              <div class="meadow-video-haze" aria-hidden="true"></div>
+              <button class="meadow-video-toggle" id="meadow-video-toggle" type="button" aria-label="暂停视频" aria-pressed="true">
+                <span class="meadow-pause" aria-hidden="true">Ⅱ</span>
+                <span class="meadow-play" aria-hidden="true">▶</span>
+              </button>
+              <p class="meadow-video-fallback">小猫和蝴蝶正在赶来的路上。</p>
+            </div>
+
+            <aside class="meadow-note" aria-label="风眠草坡小记">
+              <p>MEADOW NOTE</p>
+              <h3>风把草尖吹弯，也把紧绷的心吹松。</h3>
+              <div class="meadow-tags" aria-label="风眠草坡氛围">
+                <span>追蝶</span>
+                <span>午后</span>
+                <span>松弛</span>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section class="scene scene-forest" id="scene-forest" data-scene="forest" aria-hidden="true">
+          <div class="forest-backdrop" aria-hidden="true"></div>
+          <header class="page-header forest-header">
+            <button class="back-button" data-go="select" type="button" aria-label="返回国度选择">
+              <span>←</span> 返回
+            </button>
+            <div>
+              <p>SUNLIT FOREST</p>
+              <h2>晴光森林</h2>
+              <small class="select-subtitle">沿着光斑慢慢走一会儿。</small>
+            </div>
+            <button class="forest-next" data-go="meadow" type="button" aria-label="去风眠草坡">
+              去风眠草坡 <span>→</span>
+            </button>
+          </header>
+
+          <div class="forest-stage" aria-label="晴光森林画画视频">
+            <video
+              class="forest-video"
+              id="forest-video"
+              src="./assets/videos/painting-forest.mp4"
+              poster="./assets/dreams/sunlit-forest.jpg"
+              muted
+              playsinline
+              loop
+              preload="auto"
+            ></video>
+            <div class="forest-interaction" id="forest-interaction" aria-label="晴光森林互动">
+              <span class="forest-cursor-glow" id="forest-cursor-glow" aria-hidden="true"></span>
+              <span class="forest-cat-response" id="forest-cat-response" aria-hidden="true">
+                <i></i><i></i><i></i>
+              </span>
+            </div>
+            <div class="forest-haze" aria-hidden="true"></div>
+            <div class="forest-controls" aria-label="晴光森林控制">
+              <button class="forest-video-toggle" id="forest-video-toggle" type="button" aria-label="暂停视频" aria-pressed="true">
+                <span class="forest-pause" aria-hidden="true">Ⅱ</span>
+                <span class="forest-play" aria-hidden="true">▶</span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <section class="scene scene-play" id="scene-play" data-scene="play" aria-hidden="true">
+          <div class="play-backdrop" id="play-backdrop" aria-hidden="true">
+            <video
+              class="play-background-video"
+              id="play-background-video"
+              src="./assets/videos/tourist-photo.mp4"
+              poster="./assets/dreams/sunlit-market.jpg"
+              muted
+              playsinline
+              loop
+              preload="auto"
+            ></video>
+          </div>
+          <header class="play-hud">
+            <button class="back-button compact" data-go="select" type="button" aria-label="返回国度选择">
+              <span>←</span>
+            </button>
+            <div class="quest-chip">
+              <span class="quest-icon">✦</span>
+              <div>
+                <small>今日的小任务</small>
+                <strong>找回走失的愿望</strong>
+              </div>
+            </div>
+            <div class="wish-meter" aria-label="愿望收集进度">
+              <div class="wish-dots" id="wish-dots"></div>
+              <strong><span id="wish-count">0</span> / 5</strong>
+            </div>
+            <div class="focus-timer-chip" id="focus-timer-chip" aria-live="polite" aria-label="专注倒计时">
+              <span class="focus-timer-chip__icon" aria-hidden="true">✦</span>
+              <div>
+                <small>专注旅程</small>
+                <strong id="focus-timer-display">25:00</strong>
+              </div>
+            </div>
+          </header>
+
+          <div class="guide-bubble" id="guide-bubble">
+            <span class="guide-avatar" aria-hidden="true">
+              <i class="cat-ear left"></i><i class="cat-ear right"></i><b>•ᴗ•</b>
+            </span>
+            <p><strong>嘘，小声一点。</strong><br />愿望会藏在发光的东西里，点一点试试。</p>
+            <button id="close-guide" type="button" aria-label="关闭提示">×</button>
+          </div>
+
+          <div class="packing-note" id="packing-note" aria-live="polite">
+            <span>行囊</span>
+            <p>空空的背包也能出发。</p>
+          </div>
+
+          <div class="wish-field" id="wish-field" aria-label="愿望收集区域"></div>
+
+            <div class="completion-card" id="completion-card" role="dialog" aria-modal="true" aria-hidden="true">
+              <button class="completion-close" id="completion-close" type="button" aria-label="关闭">×</button>
+              <p class="completion-kicker">A POSTCARD FROM IDEAL KINGDOM</p>
+              <div class="completion-star" aria-hidden="true">✦</div>
+            <h2>你收到一张回信</h2>
+            <p class="completion-message" id="completion-message">
+              今天找回了勇气、松弛、好奇、陪伴和明天。理想国度把它们收进暖光里，提醒你：愿望不用很大，也值得被认真看见。
+            </p>
+            <div class="wish-receipt" aria-label="本次找回的愿望">
+              <span>勇气</span>
+              <span>松弛</span>
+              <span>好奇</span>
+              <span>陪伴</span>
+              <span>明天</span>
+            </div>
+            <div class="postcard-stamp">暖光集市<br /><span>06 · 06</span></div>
+            <button class="glass-button replay-button" id="replay-button" type="button">
+              再逛一会儿 <span>↻</span>
+            </button>
+          </div>
+
+          <div class="focus-result-card" id="focus-result-card" role="dialog" aria-modal="true" aria-hidden="true">
+            <div class="focus-result-card__panel">
+              <button class="focus-result-card__close" id="focus-result-close" type="button" aria-label="关闭">×</button>
+              <div class="focus-result-card__art" aria-hidden="true">
+                <img src="./assets/user-art/focus-cat-postcard.png" alt="" draggable="false" />
+              </div>
+              <p class="focus-result-card__kicker">A QUIET TOMATO FROM IDEAL KINGDOM</p>
+              <h2>小猫替你收好这一段专注</h2>
+              <p class="focus-result-card__message" id="focus-result-message">
+                你在理想国度停留了 25 分钟，找回了 0 / 5 枚愿望。
+              </p>
+              <p class="focus-result-card__items" id="focus-result-items">空空的背包也陪你抵达了这里。</p>
+              <div class="focus-result-card__actions">
+                <button class="glass-button focus-result-card__again" id="focus-result-again" type="button">
+                  再来一轮 <span>↻</span>
+                </button>
+                <button class="focus-result-card__home" id="focus-result-home" type="button">回到国度</button>
+              </div>
+            </div>
+          </div>
+
+          <p class="play-tip" id="play-tip">移动小鱼，猫咪会陪你一起寻找。</p>
+        </section>
+
+        <div class="scene-transition" id="scene-transition" aria-hidden="true">
+          <span class="transition-cloud cloud-left"></span>
+          <span class="transition-cloud cloud-right"></span>
+          <span class="transition-star">✦</span>
+        </div>
+
+        <!-- 复用的猫爪印 SVG 符号（纯图形，供收拾行囊弹窗使用） -->
+        <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+          <symbol id="iw-paw" viewBox="0 0 64 64">
+            <g fill="currentColor">
+              <ellipse cx="32" cy="42" rx="14" ry="11"></ellipse>
+              <ellipse cx="14" cy="28" rx="5.5" ry="7"></ellipse>
+              <ellipse cx="24" cy="18" rx="5" ry="6.5"></ellipse>
+              <ellipse cx="40" cy="18" rx="5" ry="6.5"></ellipse>
+              <ellipse cx="50" cy="28" rx="5.5" ry="7"></ellipse>
+            </g>
+          </symbol>
+        </svg>
+
+        <!-- 收拾行囊弹窗：水粉高级视觉 · 16:9（选完国度、出发前收拾行囊） -->
+        <div class="iw-modal" id="iwModal" role="dialog" aria-modal="true" aria-hidden="true" aria-label="收拾行囊">
+          <div class="iw-modal__mask" data-iw-close></div>
+
+          <!-- 面板 = 一只轻轻打开的旅行箱（左盖：标题/进度/出发 · 中缝 · 右内胆：4×2 收纳格） -->
+          <div class="iw-modal__panel">
+            <span class="iw-corner iw-corner--tl"></span>
+            <span class="iw-corner iw-corner--tr"></span>
+            <span class="iw-corner iw-corner--bl"></span>
+            <span class="iw-corner iw-corner--br"></span>
+
+            <button class="iw-modal__close" data-iw-close type="button" aria-label="关闭">×</button>
+
+            <!-- ===== 左盖：标题 / 进度 / 出发 ===== -->
+            <div class="iw-lid">
+              <span class="iw-ear iw-ear--l" aria-hidden="true"></span>
+              <span class="iw-ear iw-ear--r" aria-hidden="true"></span>
+
+              <div class="iw-tag" aria-hidden="true">
+                <span class="iw-tag__hole"></span>
+                <svg class="iw-tag__paw" viewBox="0 0 64 64"><use href="#iw-paw"></use></svg>
+              </div>
+
+              <div class="iw-lid__head">
+                <p class="iw-modal__kicker">PACK FOR A LITTLE TRIP</p>
+                <h2 class="iw-modal__title">收拾行囊</h2>
+                <p class="iw-modal__subtitle">挑几样想带上的，陪你一起出发</p>
+              </div>
+
+              <div class="iw-focus-picker" id="focus-picker" aria-label="选择专注时长">
+                <p class="iw-focus-picker__label">专注时长</p>
+                <div class="iw-focus-picker__control">
+                  <button class="iw-focus-picker__step" id="focus-minute-up" type="button" aria-label="增加一分钟">⌃</button>
+                  <div
+                    class="iw-focus-picker__wheel"
+                    id="focus-minute-wheel"
+                    role="listbox"
+                    aria-label="专注分钟数"
+                    aria-activedescendant="focus-minute-option-25"
+                    tabindex="0"
+                  ></div>
+                  <button class="iw-focus-picker__step" id="focus-minute-down" type="button" aria-label="减少一分钟">⌄</button>
+                </div>
+                <p class="iw-focus-picker__hint"><span id="focus-minute-value">25</span> 分钟后，小猫会提醒你收尾</p>
+              </div>
+
+              <div class="iw-lid__foot">
+                <div class="iw-progress">
+                  <svg class="iw-progress__paw" viewBox="0 0 64 64" aria-hidden="true"><use href="#iw-paw"></use></svg>
+                  <span class="iw-progress__text">已收拾 <span class="iw-progress__num" id="iwCount">0</span> / 8 件</span>
+                </div>
+                <button class="iw-btn-go" id="iwBtnGo" type="button">
+                  <span class="iw-btn-go__label">出发</span>
+                  <span class="iw-btn-go__arrow" aria-hidden="true">→</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="iw-departure-countdown" id="departure-countdown" aria-live="assertive" aria-hidden="true">
+              <svg class="iw-departure-countdown__paw" viewBox="0 0 64 64" aria-hidden="true"><use href="#iw-paw"></use></svg>
+              <span id="departure-countdown-value">3</span>
+            </div>
+
+            <!-- ===== 中缝：纵向皮带 + 搭扣 ===== -->
+            <div class="iw-belt" aria-hidden="true">
+              <span class="iw-belt__buckle"></span>
+            </div>
+
+            <!-- ===== 右内胆：奶油衬里 + 收纳格（4 列 × 2 行） ===== -->
+            <div class="iw-lining">
+              <div class="iw-grid">
+                <button class="iw-item" data-iw-item type="button" aria-pressed="false">
+                  <span class="iw-item__cell">
+                    <span class="iw-item__glow"></span>
+                    <img class="iw-item__img" src="./assets/user-art/notebook.png" alt="笔记本" draggable="false">
+                    <span class="iw-item__shine"></span>
+                    <svg class="iw-item__paw" viewBox="0 0 64 64" aria-hidden="true"><use href="#iw-paw"></use></svg>
+                  </span>
+                  <span class="iw-item__name">笔记本</span>
+                </button>
+
+                <button class="iw-item" data-iw-item type="button" aria-pressed="false">
+                  <span class="iw-item__cell">
+                    <span class="iw-item__glow"></span>
+                    <img class="iw-item__img" src="./assets/user-art/bookmark.png" alt="书签" draggable="false">
+                    <span class="iw-item__shine"></span>
+                    <svg class="iw-item__paw" viewBox="0 0 64 64" aria-hidden="true"><use href="#iw-paw"></use></svg>
+                  </span>
+                  <span class="iw-item__name">书签</span>
+                </button>
+
+                <button class="iw-item" data-iw-item type="button" aria-pressed="false">
+                  <span class="iw-item__cell">
+                    <span class="iw-item__glow"></span>
+                    <img class="iw-item__img" src="./assets/user-art/brush.png" alt="画笔" draggable="false">
+                    <span class="iw-item__shine"></span>
+                    <svg class="iw-item__paw" viewBox="0 0 64 64" aria-hidden="true"><use href="#iw-paw"></use></svg>
+                  </span>
+                  <span class="iw-item__name">画笔</span>
+                </button>
+
+                <button class="iw-item" data-iw-item type="button" aria-pressed="false">
+                  <span class="iw-item__cell">
+                    <span class="iw-item__glow"></span>
+                    <img class="iw-item__img" src="./assets/user-art/music-box.png" alt="音乐盒" draggable="false">
+                    <span class="iw-item__shine"></span>
+                    <svg class="iw-item__paw" viewBox="0 0 64 64" aria-hidden="true"><use href="#iw-paw"></use></svg>
+                  </span>
+                  <span class="iw-item__name">音乐盒</span>
+                </button>
+
+                <button class="iw-item" data-iw-item type="button" aria-pressed="false">
+                  <span class="iw-item__cell">
+                    <span class="iw-item__glow"></span>
+                    <img class="iw-item__img" src="./assets/user-art/lunchbox.png" alt="便当" draggable="false">
+                    <span class="iw-item__shine"></span>
+                    <svg class="iw-item__paw" viewBox="0 0 64 64" aria-hidden="true"><use href="#iw-paw"></use></svg>
+                  </span>
+                  <span class="iw-item__name">便当</span>
+                </button>
+
+                <button class="iw-item" data-iw-item type="button" aria-pressed="false">
+                  <span class="iw-item__cell">
+                    <span class="iw-item__glow"></span>
+                    <img class="iw-item__img" src="./assets/user-art/coffee.png" alt="咖啡" draggable="false">
+                    <span class="iw-item__shine"></span>
+                    <svg class="iw-item__paw" viewBox="0 0 64 64" aria-hidden="true"><use href="#iw-paw"></use></svg>
+                  </span>
+                  <span class="iw-item__name">咖啡</span>
+                </button>
+
+                <button class="iw-item" data-iw-item type="button" aria-pressed="false">
+                  <span class="iw-item__cell">
+                    <span class="iw-item__glow"></span>
+                    <img class="iw-item__img" src="./assets/user-art/star-medal.png" alt="星星勋章" draggable="false">
+                    <span class="iw-item__shine"></span>
+                    <svg class="iw-item__paw" viewBox="0 0 64 64" aria-hidden="true"><use href="#iw-paw"></use></svg>
+                  </span>
+                  <span class="iw-item__name">星星勋章</span>
+                </button>
+
+                <button class="iw-item" data-iw-item type="button" aria-pressed="false">
+                  <span class="iw-item__cell">
+                    <span class="iw-item__glow"></span>
+                    <img class="iw-item__img" src="./assets/user-art/backpack.png" alt="小背包" draggable="false">
+                    <span class="iw-item__shine"></span>
+                    <svg class="iw-item__paw" viewBox="0 0 64 64" aria-hidden="true"><use href="#iw-paw"></use></svg>
+                  </span>
+                  <span class="iw-item__name">小背包</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="touch-ripples" id="touch-ripples" aria-hidden="true"></div>
+      </div>
+    </main>
+
+    <div class="cursor-aura" id="cursor-aura" aria-hidden="true"></div>
+    <div class="cat-cursor" id="cat-cursor" aria-hidden="true">
+      <span class="cursor-tail"></span>
+      <span class="cursor-cat-body"></span>
+      <span class="cursor-cat-head">
+        <i class="cursor-ear ear-left"></i>
+        <i class="cursor-ear ear-right"></i>
+        <b>•ᴗ•</b>
+      </span>
+    </div>
+    <div class="fish-cursor" id="fish-cursor" aria-hidden="true">
+      <span class="fish-tail"></span><span class="fish-body"><i></i></span>
+    </div>
+
+    <div class="orientation-hint">
+      <div class="rotate-phone" aria-hidden="true">↻</div>
+      <strong>把手机横过来</strong>
+      <p>理想国度在横屏里更好看。</p>
+    </div>
+
+    <script src="./game.js?v=20260607-01"></script>
+  </body>
+</html>
